@@ -1,6 +1,7 @@
 import json
 import serial
 
+
 class SerialInterface:
     """
     Handles serial communication with the ESP32.
@@ -16,28 +17,41 @@ class SerialInterface:
     """
 
     def __init__(self):
-        self.port = None # Stores the currently connected serial port.
+        # Stores the currently connected serial port.
+        self.port = None
+
+        # Default communication speed.
         self.baud_rate = 115200
-        self.connection = None #active serial connection object
+
+        # Active serial connection object.
+        self.connection = None
+
+        # Connection status.
         self.connected = False
 
     def connect(self, port):
-        """Establish a serial connection with the ESP32.
+        """
+        Establish a serial connection with the ESP32.
 
         Args:
-            port (str): Serial port name (e.g., COM3, COM4)
+            port (str): Serial port name (e.g., COM3, COM4).
 
         Returns:
-            bool: True if connected successfully, False otherwise."""
+            bool: True if connected successfully, False otherwise.
+        """
+
         try:
             self.connection = serial.Serial(
                 port=port,
                 baudrate=self.baud_rate,
                 timeout=1
             )
+
             self.port = port
             self.connected = True
+
             return True
+
         except serial.SerialException as error:
             self.connection = None
             self.connected = False
@@ -45,7 +59,7 @@ class SerialInterface:
             print(f"Connection Error: {error}")
 
             return False
-        
+
     def disconnect(self):
         """
         Close the serial connection.
@@ -67,7 +81,7 @@ class SerialInterface:
         """
 
         return self.connected
-    
+
     def send_command(self, command: dict):
         """
         Send a JSON command to the ESP32.
@@ -78,14 +92,16 @@ class SerialInterface:
         Returns:
             bool: True if sent successfully, False otherwise.
         """
+
         if not isinstance(command, dict):
             raise TypeError("Command must be a dictionary.")
-        
+
         if not self.is_connected():
             return False
+
         message = json.dumps(command)
         message += "\n"
-        
+
         try:
             self.connection.write(message.encode("utf-8"))
             return True
@@ -93,6 +109,7 @@ class SerialInterface:
         except serial.SerialException as error:
             print(f"Send Error: {error}")
             return False
+
     def read_response(self):
         """
         Read a JSON response from the ESP32.
@@ -102,12 +119,20 @@ class SerialInterface:
                 Parsed JSON response if successful,
                 otherwise None.
         """
+
         if not self.is_connected():
             return None
+
         try:
             response = self.connection.readline()
             response = response.decode("utf-8").strip()
+
+            # No response received.
+            if not response:
+                return None
+
             return json.loads(response)
+
         except (serial.SerialException, json.JSONDecodeError) as error:
             print(f"Read Error: {error}")
             return None
