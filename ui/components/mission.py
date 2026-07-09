@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QLineEdit,
-    QPushButton
+    QPushButton,
 )
 
 
@@ -23,10 +23,12 @@ class MissionComponent(QWidget):
 
         self.start_cb = None
         self.home_cb = None
+        self.calibrate_cb = None
         self.stop_cb = None
 
         self.start_btn.clicked.connect(self._start)
         self.home_btn.clicked.connect(self._home)
+        self.calibrate_btn.clicked.connect(self._calibrate)
         self.stop_btn.clicked.connect(self._stop)
 
     # -------------------------------------------------
@@ -66,21 +68,33 @@ class MissionComponent(QWidget):
         self.home_btn = QPushButton("⌂ Home Robot")
         self.home_btn.setObjectName("secondaryBtn")
 
-        self.stop_btn = QPushButton("■ Stop Mission")
-        self.stop_btn.setObjectName("dangerBtn")
+        self.calibrate_btn = QPushButton("⟳ Calibrate")
+        self.calibrate_btn.setObjectName("secondaryBtn")
 
         row.addWidget(self.home_btn)
-        row.addWidget(self.stop_btn)
+        row.addWidget(self.calibrate_btn)
 
         layout.addLayout(row)
+
+        # Danger action
+        self.stop_btn = QPushButton("■ Stop Mission")
+        self.stop_btn.setObjectName("dangerBtn")
+        layout.addWidget(self.stop_btn)
 
     # -------------------------------------------------
     # Wiring
     # -------------------------------------------------
 
-    def bind_actions(self, start_cb, home_cb, stop_cb):
+    def bind_actions(
+        self,
+        start_cb,
+        home_cb,
+        calibrate_cb,
+        stop_cb,
+    ):
         self.start_cb = start_cb
         self.home_cb = home_cb
+        self.calibrate_cb = calibrate_cb
         self.stop_cb = stop_cb
 
     # -------------------------------------------------
@@ -94,6 +108,10 @@ class MissionComponent(QWidget):
     def _home(self):
         if self.home_cb:
             self.home_cb()
+
+    def _calibrate(self):
+        if self.calibrate_cb:
+            self.calibrate_cb()
 
     def _stop(self):
         if self.stop_cb:
@@ -109,6 +127,7 @@ class MissionComponent(QWidget):
         """
 
         self.start_btn.setEnabled(not running)
+        self.calibrate_btn.setEnabled(not running)
 
         # Safe actions remain available.
         self.home_btn.setEnabled(True)
