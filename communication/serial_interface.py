@@ -1,5 +1,6 @@
 import json
 import serial
+from config import SERIAL_BAUD_RATE, SERIAL_TIMEOUT
 
 
 class SerialInterface:
@@ -21,7 +22,7 @@ class SerialInterface:
         self.port = None
 
         # Default communication speed.
-        self.baud_rate = 115200
+        self.baud_rate = SERIAL_BAUD_RATE
 
         # Active serial connection object.
         self.connection = None
@@ -44,7 +45,7 @@ class SerialInterface:
             self.connection = serial.Serial(
                 port=port,
                 baudrate=self.baud_rate,
-                timeout=1
+                timeout=SERIAL_TIMEOUT
             )
 
             self.port = port
