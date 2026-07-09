@@ -98,3 +98,11 @@ WORKSPACE_HEIGHT = 250.0
 # Leave as None until the camera has been mounted and the
 # workspace has been calibrated.
 WORKSPACE_IMAGE_POINTS = None
+
+# ==========================================================
+# Serial Communication
+# ==========================================================
+
+# Default serial communication settings.
+SERIAL_BAUD_RATE = 115200
+SERIAL_TIMEOUT = 1
