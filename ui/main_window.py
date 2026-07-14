@@ -107,6 +107,7 @@ class MainWindow(QMainWindow):
         self.mission.bind_actions(
             start_cb=self.start_mission,
             home_cb=self.home_robot,
+            calibrate_cb=self.calibrate_workspace,
             stop_cb=self.stop_mission,
         )
 
@@ -149,6 +150,10 @@ class MainWindow(QMainWindow):
     def home_robot(self):
         self.log.system("Homing robot...")
 
+    def calibrate_workspace(self):
+        self.log.system("Calibrating workspace...")
+        self.log.success("Workspace calibration complete.")
+
     # ==========================================================
     # STATE SYNCHRONIZATION
     # ==========================================================
@@ -173,3 +178,4 @@ class MainWindow(QMainWindow):
         label = QLabel("Modular Robotic Arm System")
         label.setObjectName("mainHeader")
         return label
+

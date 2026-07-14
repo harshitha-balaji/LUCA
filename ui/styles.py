@@ -138,7 +138,7 @@ QLineEdit:focus {{
    ================================================== */
 
 QPushButton {{
-    min-height: 34px;
+    min-height: 32px;
 }}
 
 QPushButton#primaryBtn {{
@@ -146,7 +146,7 @@ QPushButton#primaryBtn {{
     color: {APP_BACKGROUND};
     border: none;
     border-radius: {BUTTON_RADIUS}px;
-    padding: 8px;
+    padding: 6px;
     font-weight: 600;
 }}
 
@@ -168,7 +168,7 @@ QPushButton#secondaryBtn {{
     color: {TEXT_PRIMARY};
     border: 1px solid {BORDER};
     border-radius: {BUTTON_RADIUS}px;
-    padding: 8px;
+    padding: 6px;
 }}
 
 QPushButton#secondaryBtn:hover {{
@@ -185,7 +185,7 @@ QPushButton#dangerBtn {{
     color: {TEXT_PRIMARY};
     border: 1px solid {BORDER};
     border-radius: {BUTTON_RADIUS}px;
-    padding: 8px;
+    padding: 6px;
 }}
 
 QPushButton#dangerBtn:hover {{

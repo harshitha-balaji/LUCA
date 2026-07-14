@@ -27,7 +27,7 @@ TEXT_DISABLED = "#8C959F"
 # BRAND (TEAL)
 # ===========================
 
-TEAL_MUTED = "#1F7A70"
+TEAL_MUTED = "#238C83"
 TEAL = "#2A9D8F"
 TEAL_HOVER = "#38B2AC"
 TEAL_ACTIVE = "#4FD1C5"
