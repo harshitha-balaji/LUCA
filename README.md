@@ -98,7 +98,18 @@ robotic_arm/
 ```
 
 ---
+# Software Layers
 
+| Layer | Responsibility |
+|--------|----------------|
+| UI | User interaction and visualization |
+| Core | Coordinates all subsystems |
+| Vision | Camera processing and object detection |
+| Motion | Kinematic computations |
+| Hardware | High-level robot operations |
+| Communication | Data exchange with ESP32 |
+| Firmware | Low-level embedded control |
+---
 # Folder Responsibilities
 
 # main.py
@@ -209,7 +220,7 @@ Provides reusable card-style containers used throughout the dashboard.
 Future widgets can be added here without affecting individual components.
 
 ---
-## workers/
+## ui/workers/
 
 Background worker threads used to execute long-running operations without blocking the graphical interface.
 
@@ -217,9 +228,7 @@ Current workers include:
 
 ### mission_worker.py
 
-executes autonomous missions on a separate Qt thread, keeping the UI responsive during robot 
-
-operation.
+executes autonomous missions on a separate Qt thread, keeping the UI responsive during robot operation.
 ---
 ## styles.py
 
@@ -335,6 +344,16 @@ Responsible for perception only.
 No robot movement logic exists inside this module.
 
 ---
+## assets/
+
+Stores vision calibration resources.
+
+Currently contains:
+
+- Workspace background image captured during calibration and used for background subtraction-based object detection.
+
+---
+
 
 ## camera.py
 
@@ -352,23 +371,16 @@ Object detection pipeline.
 
 Current approach:
 
-1. Capture workspace image
-2. Compare against calibrated background
-3. Apply image processing
-4. Detect object contours
-5. Estimate object centroid position
+1. Preprocess image
+2. Perform background subtraction
+3. Generate foreground mask
+4. Remove image noise
+5. Detect object contours
+6. Estimate object centroid
+7. Convert image coordinates to workspace coordinates
 
 ---
 
-## assets/
-
-Stores vision calibration resources.
-
-Currently contains:
-
-- Workspace background image captured during calibration and used for background subtraction-based object detection.
-
----
 
 # motion/
 
@@ -503,15 +515,13 @@ The current target workflow is autonomous pick-and-place.
 
 6. Move robotic arm
 
-7. Activate gripper
+7. Close gripper and secure the object
 
-8. Pick object
+8. Move to destination
 
-9. Move to destination
+9. Open gripper
 
-10. Release object
-
-11. Return to idle state
+10. Return to idle state
 ```
 
 ---
@@ -537,7 +547,9 @@ Each module owns a specific responsibility, allowing improvements without rewrit
 Planned improvements:
 
 - Background camera processing thread
-- Dedicated communication thread
+- Vision debugging overlays
+- Mission queue support
+- Enhanced event logging
 - Real-time robot state synchronization
 - Advanced trajectory planning
 - Collision avoidance
@@ -555,6 +567,7 @@ Planned improvements:
 |---|---|
 | Desktop UI | PyQt6 |
 | Vision Processing | OpenCV |
+| Numerical Computing | NumPy |
 | Communication | Serial |
 | Controller Logic | Python |
 | Embedded Controller | ESP32 |
