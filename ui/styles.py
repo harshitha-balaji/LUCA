@@ -127,10 +127,22 @@ QLineEdit {{
     color: {TEXT_PRIMARY};
     padding: 6px;
     border-radius: {INPUT_RADIUS}px;
+
+    selection-background-color: {TEAL};
+    selection-color: {APP_BACKGROUND};
+}}
+
+QLineEdit::placeholder {{
+    color: {TEXT_SUPPORT};
 }}
 
 QLineEdit:focus {{
     border: 1px solid {TEAL};
+}}
+
+QLineEdit:disabled {{
+    color: {TEXT_DISABLED};
+    border: 1px solid {BORDER};
 }}
 
 /* ==================================================
@@ -200,5 +212,73 @@ QPushButton#dangerBtn:pressed {{
 
 QPushButton#dangerBtn:disabled {{
     color: {TEXT_DISABLED};
+}}
+
+/* ==================================================
+   GLOBAL SCROLLBARS
+   ================================================== */
+
+QScrollBar:vertical {{
+    background: transparent;
+    width: 10px;
+}}
+
+QScrollBar::groove:vertical {{
+    background: transparent;
+    border: none;
+}}
+
+QScrollBar::handle:vertical {{
+    background-color: {BORDER};
+    border-radius: 5px;
+    min-height: 30px;
+}}
+
+QScrollBar::handle:vertical:hover {{
+    background-color: {TEAL_MUTED};
+}}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {{
+    background: transparent;
+}}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {{
+    background: transparent;
+    border: none;
+    height: 0px;
+}}
+
+QScrollBar:horizontal {{
+    background: transparent;
+    height: 10px;
+}}
+
+QScrollBar::groove:horizontal {{
+    background: transparent;
+    border: none;
+}}
+
+QScrollBar::handle:horizontal {{
+    background-color: {BORDER};
+    border-radius: 5px;
+    min-width: 30px;
+}}
+
+QScrollBar::handle:horizontal:hover {{
+    background-color: {TEAL_MUTED};
+}}
+
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {{
+    background: transparent;
+}}
+
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {{
+    background: transparent;
+    border: none;
+    width: 0px;
 }}
 """

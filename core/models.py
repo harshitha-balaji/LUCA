@@ -13,7 +13,7 @@ Design Principles:
 from dataclasses import dataclass
 from enum import Enum
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class Position:
     """
     Represents a point in the robot's 3D workspace.
@@ -31,7 +31,7 @@ class Position:
     y: float
     z: float
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class DetectedObject:
     """
     Represents an object detected by the vision system.
@@ -43,7 +43,7 @@ class DetectedObject:
 
     position: Position
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class JointAngles:
     """
     Represents the configuration of the robot's joints.

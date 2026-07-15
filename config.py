@@ -16,6 +16,7 @@ Future additions:
 - Motion parameters
 - Default robot positions
 """
+from pathlib import Path
 
 # ==========================================================
 # Camera Configuration
@@ -43,8 +44,11 @@ CAMERA_FPS = 30
 
 # Path to the stored empty workspace image.
 # This image is captured during workspace calibration.
-BACKGROUND_IMAGE_PATH = "vision/assets/background.png"
+BASE_DIR = Path(__file__).resolve().parent
 
+BACKGROUND_IMAGE_PATH = (
+    BASE_DIR / "vision" / "assets" / "background.png"
+)
 
 # Minimum pixel difference required to consider a pixel
 # as part of a detected object.
@@ -98,3 +102,11 @@ WORKSPACE_HEIGHT = 250.0
 # Leave as None until the camera has been mounted and the
 # workspace has been calibrated.
 WORKSPACE_IMAGE_POINTS = None
+
+# ==========================================================
+# Serial Communication
+# ==========================================================
+
+# Default serial communication settings.
+SERIAL_BAUD_RATE = 115200
+SERIAL_TIMEOUT = 1

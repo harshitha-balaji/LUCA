@@ -17,6 +17,8 @@ This module does not perform:
 - Robot control
 """
 
+from threading import Lock
+
 import cv2
 from numpy import ndarray
 
@@ -26,6 +28,7 @@ from config import (
     CAMERA_HEIGHT,
     CAMERA_FPS,
 )
+
 
 class Camera:
     """
@@ -47,7 +50,8 @@ class Camera:
 
         self._capture = None
         self._running = False
-    
+        self._lock = Lock()
+
     def start(self) -> None:
         """
         Open and configure the camera.
@@ -56,22 +60,24 @@ class Camera:
             RuntimeError: If the camera cannot be opened.
         """
 
-        if self._running:
-            return
+        with self._lock:
 
-        self._capture = cv2.VideoCapture(CAMERA_INDEX)
+            if self._running:
+                return
 
-        if not self._capture.isOpened():
-            self._capture.release()
-            self._capture = None
-            raise RuntimeError("Failed to open the camera.")
+            self._capture = cv2.VideoCapture(CAMERA_INDEX)
 
-        self._capture.set(cv2.CAP_PROP_FRAME_WIDTH, CAMERA_WIDTH)
-        self._capture.set(cv2.CAP_PROP_FRAME_HEIGHT, CAMERA_HEIGHT)
-        self._capture.set(cv2.CAP_PROP_FPS, CAMERA_FPS)
+            if not self._capture.isOpened():
+                self._capture.release()
+                self._capture = None
+                raise RuntimeError("Failed to open the camera.")
 
-        self._running = True
-    
+            self._capture.set(cv2.CAP_PROP_FRAME_WIDTH, CAMERA_WIDTH)
+            self._capture.set(cv2.CAP_PROP_FRAME_HEIGHT, CAMERA_HEIGHT)
+            self._capture.set(cv2.CAP_PROP_FPS, CAMERA_FPS)
+
+            self._running = True
+
     def stop(self) -> None:
         """
         Release the camera and free its resources.
@@ -79,12 +85,14 @@ class Camera:
         If the camera is not running, this method has no effect.
         """
 
-        if not self._running:
-            return
+        with self._lock:
 
-        self._capture.release()
-        self._capture = None
-        self._running = False
+            if not self._running:
+                return
+
+            self._capture.release()
+            self._capture = None
+            self._running = False
 
     def capture_frame(self) -> ndarray:
         """
@@ -98,16 +106,20 @@ class Camera:
                 cannot be captured.
         """
 
-        if not self._running:
-            raise RuntimeError("Camera is not running.")
+        with self._lock:
 
-        success, frame = self._capture.read()
+            if not self._running:
+                raise RuntimeError("Camera is not running.")
 
-        if not success:
-            raise RuntimeError("Failed to capture a frame from the camera.")
+            success, frame = self._capture.read()
 
-        return frame
-    
+            if not success:
+                raise RuntimeError(
+                    "Failed to capture a frame from the camera."
+                )
+
+            return frame
+
     @property
     def is_running(self) -> bool:
         """
@@ -117,5 +129,5 @@ class Camera:
             True if the camera has been started, otherwise False.
         """
 
-        return self._running
-
+        with self._lock:
+            return self._running

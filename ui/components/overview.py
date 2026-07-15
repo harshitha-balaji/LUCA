@@ -28,12 +28,17 @@ class OverviewComponent(QWidget):
         # -----------------------------
         # System information
         # -----------------------------
-        layout.addWidget(self._row("Camera", "Connected"))
-        layout.addWidget(self._row("ESP32", "Connected"))
-        layout.addWidget(self._row("Arm", "Homed"))
-        layout.addWidget(self._row("Mode", "Idle"))
+        self.camera_status = QLabel("Unknown")
+        self.esp32_status = QLabel("Unknown")
+        self.arm_status = QLabel("Unknown")
+        self.mode_status = QLabel("Idle")
 
-    def _row(self, label_text: str, value_text: str) -> QWidget:
+        layout.addWidget(self._row("Camera", self.camera_status))
+        layout.addWidget(self._row("ESP32", self.esp32_status))
+        layout.addWidget(self._row("Arm", self.arm_status))
+        layout.addWidget(self._row("Mode", self.mode_status))
+
+    def _row(self, label_text: str, value_label: QLabel) -> QWidget:
         container = QWidget()
 
         row = QGridLayout(container)
@@ -43,10 +48,8 @@ class OverviewComponent(QWidget):
         label = QLabel(label_text)
         label.setObjectName("supportText")
 
-        value = QLabel(value_text)
-
         row.addWidget(label, 0, 0)
-        row.addWidget(value, 0, 1)
+        row.addWidget(value_label, 0, 1)
 
         return container
 
@@ -54,18 +57,40 @@ class OverviewComponent(QWidget):
     # Public API
     # -------------------------------------------------
 
-    def set_running(self, running: bool):
+    def update_status(
+        self,
+        *,
+        running: bool,
+        camera_connected: bool,
+        esp32_connected: bool,
+        arm_status: str,
+    ):
         """
-        Updates the summary status shown at the top of the card.
+        Synchronize all overview fields with the backend state.
         """
 
+        # Summary + Mode
         if running:
             self.status_line.setText("● Running")
             self.status_line.setObjectName("statusRunning")
+            self.mode_status.setText("Running")
         else:
             self.status_line.setText("● Ready")
             self.status_line.setObjectName("statusReady")
+            self.mode_status.setText("Idle")
 
-        # Refresh stylesheet after changing object name
         self.status_line.style().unpolish(self.status_line)
         self.status_line.style().polish(self.status_line)
+
+        # Camera
+        self.camera_status.setText(
+            "Connected" if camera_connected else "Disconnected"
+        )
+
+        # ESP32
+        self.esp32_status.setText(
+            "Connected" if esp32_connected else "Disconnected"
+        )
+
+        # Arm
+        self.arm_status.setText(arm_status)

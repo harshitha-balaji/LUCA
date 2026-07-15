@@ -19,6 +19,7 @@ This module does not perform:
 import cv2
 import numpy as np
 from numpy import ndarray
+import os
 
 from config import (
     BLUR_KERNEL_SIZE,
@@ -26,6 +27,7 @@ from config import (
     MIN_OBJECT_AREA,
     MAX_OBJECT_AREA,
     DIFFERENCE_THRESHOLD,
+    BACKGROUND_IMAGE_PATH,
     WORKSPACE_WIDTH,
     WORKSPACE_HEIGHT,
     WORKSPACE_IMAGE_POINTS,
@@ -60,7 +62,7 @@ class Detector:
         required for image processing.
         """
 
-        self._background = None
+        self._background = self._load_background()
 
         self._transform_matrix = self._create_workspace_transform()
 
@@ -172,6 +174,25 @@ class Detector:
             image_points,
             workspace_points,
         )
+    
+    def _load_background(self) -> ndarray | None:
+        """
+        Load the previously calibrated workspace background.
+
+        Returns:
+            The preprocessed background image if one exists,
+            otherwise None.
+        """
+
+        if not os.path.exists(BACKGROUND_IMAGE_PATH):
+            return None
+
+        background = cv2.imread(BACKGROUND_IMAGE_PATH)
+
+        if background is None:
+            return None
+
+        return self._preprocess(background)
 
     def _preprocess(self, frame: ndarray) -> ndarray:
         """

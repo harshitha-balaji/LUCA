@@ -7,6 +7,8 @@ from PyQt6.QtWidgets import (
     QPushButton,
 )
 
+from core.models import Position
+
 
 class MissionComponent(QWidget):
     """
@@ -116,6 +118,26 @@ class MissionComponent(QWidget):
     def _stop(self):
         if self.stop_cb:
             self.stop_cb()
+
+    
+    def get_destination(self) -> Position:
+        """
+        Return the destination coordinates entered by the user.
+
+        Returns:
+            Position:
+                Destination expressed in workspace coordinates.
+
+        Raises:
+            ValueError:
+                If any coordinate is invalid.
+        """
+
+        return Position(
+            x=float(self.x.text()),
+            y=float(self.y.text()),
+            z=float(self.z.text()),
+        )
 
     # -------------------------------------------------
     # Public API
