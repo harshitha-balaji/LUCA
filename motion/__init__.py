@@ -5,6 +5,10 @@ This package provides motion-related algorithms used by the
 robot controller.
 """
 
-from .inverse_kinematics import InverseKinematics
+from .kinematics import InverseKinematics
+from .trajectory import TrajectoryPlanner
 
-__all__ = ["InverseKinematics"]
+__all__ = [
+    "InverseKinematics",
+    "TrajectoryPlanner",
+]

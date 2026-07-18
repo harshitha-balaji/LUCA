@@ -109,6 +109,7 @@ WORKSPACE_IMAGE_POINTS = None
 
 # Default serial communication settings.
 SERIAL_BAUD_RATE = 115200
+<<<<<<< HEAD
 SERIAL_TIMEOUT = 1
 
 # ==========================================================
@@ -145,3 +146,6 @@ WRIST_ROLL_MAX = 180.0
 
 GRIPPER_MIN = 0.0
 GRIPPER_MAX = 90.0
+=======
+SERIAL_TIMEOUT = 1
+>>>>>>> origin/kavya-backend
