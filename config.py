@@ -110,3 +110,38 @@ WORKSPACE_IMAGE_POINTS = None
 # Default serial communication settings.
 SERIAL_BAUD_RATE = 115200
 SERIAL_TIMEOUT = 1
+
+# ==========================================================
+# Robot Geometry (millimetres)
+# ==========================================================
+
+BASE_HEIGHT = 100.0
+
+UPPER_ARM_LENGTH = 140.0
+
+FOREARM_LENGTH = 140.0
+
+WRIST_LENGTH = 70.0
+
+
+# ==========================================================
+# Joint Limits (degrees)
+# ==========================================================
+
+BASE_MIN = -180.0
+BASE_MAX = 180.0
+
+SHOULDER_MIN = -90.0
+SHOULDER_MAX = 90.0
+
+ELBOW_MIN = 0.0
+ELBOW_MAX = 180.0
+
+WRIST_PITCH_MIN = -90.0
+WRIST_PITCH_MAX = 90.0
+
+WRIST_ROLL_MIN = -180.0
+WRIST_ROLL_MAX = 180.0
+
+GRIPPER_MIN = 0.0
+GRIPPER_MAX = 90.0
