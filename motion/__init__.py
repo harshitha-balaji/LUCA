@@ -6,5 +6,6 @@ robot controller.
 """
 
 from .kinematics import InverseKinematics
+from .trajectory import TrajectoryPlanner
 
 __all__ = ["InverseKinematics"]
