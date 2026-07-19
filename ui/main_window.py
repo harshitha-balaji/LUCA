@@ -27,6 +27,11 @@ from .components.event_log import EventLogComponent
 from core.robot_controller import RobotController
 from .workers.mission_worker import MissionWorker
 
+from PyQt6.QtGui import QIcon
+
+from config import WINDOW_TITLE, ICON_PATH
+
+
 
 class MainWindow(QMainWindow):
 
@@ -36,7 +41,8 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Modular Robotic Arm Controller")
+        self.setWindowTitle(WINDOW_TITLE)
+        self.setWindowIcon(QIcon(str(ICON_PATH)))
         self.resize(1400, 850)
         self.setMinimumSize(1100, 700)
 

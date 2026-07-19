@@ -18,6 +18,21 @@ Future additions:
 """
 from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent
+
+# ==========================================================
+# Application
+# ==========================================================
+
+APP_NAME = "LUCA"
+
+APP_FULL_NAME = "Lightweight Universal Controller Assistant"
+
+APP_VERSION = "1.0.0"
+
+ICON_PATH = BASE_DIR / "assets" / "icon.png"
+WINDOW_TITLE = f"{APP_NAME} — {APP_FULL_NAME}"
+
 # ==========================================================
 # Camera Configuration
 # ==========================================================
@@ -44,7 +59,6 @@ CAMERA_FPS = 30
 
 # Path to the stored empty workspace image.
 # This image is captured during workspace calibration.
-BASE_DIR = Path(__file__).resolve().parent
 
 BACKGROUND_IMAGE_PATH = (
     BASE_DIR / "vision" / "assets" / "background.png"

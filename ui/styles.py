@@ -2,69 +2,59 @@ from .theme import *
 
 APP_STYLE = f"""
 /* ==================================================
-   APPLICATION
+   APPLICATION FOUNDATION
    ================================================== */
 
 QMainWindow {{
-    background-color: {APP_BACKGROUND};
+    background-color: {CANVAS};
+}}
+
+QWidget {{
+    color: {TEXT_SECONDARY};
+    font-size: {BODY_SIZE}px;
 }}
 
 /* ==================================================
-   CARD SYSTEM
+   SURFACE SYSTEM
    ================================================== */
 
 QFrame#card {{
-    background-color: {CARD_BACKGROUND};
+    background-color: {SURFACE};
     border: 1px solid {BORDER};
     border-radius: {CARD_RADIUS}px;
 }}
 
-/* ==================================================
-   EVENT LOG CONTAINER (FIX)
-   ================================================== */
-
 QWidget#eventLog {{
-    background-color: {CARD_BACKGROUND};
+    background-color: {SURFACE};
 }}
 
 /* ==================================================
-   CARD TITLES
-   ================================================== */
-
-QLabel#cardTitle {{
-    color: {TEAL_MUTED};
-    font-size: {CARD_TITLE_SIZE}px;
-    font-weight: 600;
-    padding-bottom: 6px;
-    letter-spacing: 0.3px;
-}}
-
-/* ==================================================
-   MAIN HEADER
+   TYPOGRAPHY
    ================================================== */
 
 QLabel#mainHeader {{
     color: {TEXT_PRIMARY};
     font-size: {HEADER_SIZE}px;
     font-weight: 600;
-    letter-spacing: 0.4px;
 }}
 
-/* ==================================================
-   GLOBAL TEXT
-   ================================================== */
+QLabel#cardTitle {{
+    color: {ACCENT};
+    font-size: {CARD_TITLE_SIZE}px;
+    font-weight: 600;
+    padding-bottom: 6px;
+}}
 
-QLabel {{
+QLabel#secondaryText {{
     color: {TEXT_SECONDARY};
-    font-size: {BODY_SIZE}px;
 }}
 
-QLabel#supportText {{
-    color: {TEXT_SUPPORT};
+QLabel#disabledText {{
+    color: {TEXT_DISABLED};
 }}
 
 /* ==================================================
-   ROBOT STATUS
+   STATUS SYSTEM
    ================================================== */
 
 QLabel#statusReady {{
@@ -73,7 +63,7 @@ QLabel#statusReady {{
 }}
 
 QLabel#statusRunning {{
-    color: {TEAL};
+    color: {ACCENT};
     font-weight: 600;
 }}
 
@@ -88,18 +78,15 @@ QLabel#statusError {{
 }}
 
 /* ==================================================
-   EVENT LOG TEXT STYLES
+   EVENT LOG
    ================================================== */
 
 QLabel#logTimestamp {{
-    color: {TEXT_SUPPORT};
+    color: {TEXT_DISABLED};
     min-width: 42px;
 }}
 
-QLabel#logInfo {{
-    color: {TEXT_PRIMARY};
-}}
-
+QLabel#logInfo,
 QLabel#logSystem {{
     color: {TEXT_PRIMARY};
 }}
@@ -122,52 +109,56 @@ QLabel#logError {{
    ================================================== */
 
 QLineEdit {{
-    background-color: {APP_BACKGROUND};
+    background-color: {INTERACTIVE};
     border: 1px solid {BORDER};
-    color: {TEXT_PRIMARY};
-    padding: 6px;
     border-radius: {INPUT_RADIUS}px;
 
-    selection-background-color: {TEAL};
-    selection-color: {APP_BACKGROUND};
+    color: {TEXT_PRIMARY};
+    padding: 6px;
+
+    selection-background-color: {ACCENT};
+    selection-color: {CANVAS};
 }}
 
 QLineEdit::placeholder {{
-    color: {TEXT_SUPPORT};
+    color: {TEXT_DISABLED};
 }}
 
 QLineEdit:focus {{
-    border: 1px solid {TEAL};
+    border: 1px solid {BORDER_FOCUS};
 }}
 
 QLineEdit:disabled {{
     color: {TEXT_DISABLED};
-    border: 1px solid {BORDER};
 }}
 
 /* ==================================================
-   BUTTONS
+   BUTTON SYSTEM
    ================================================== */
 
 QPushButton {{
     min-height: 32px;
-}}
-
-QPushButton#primaryBtn {{
-    background-color: {TEAL};
-    color: {APP_BACKGROUND};
-    border: none;
     border-radius: {BUTTON_RADIUS}px;
-    padding: 6px;
+    padding: 6px 12px;
     font-weight: 600;
 }}
 
+/* ------------------------------
+   Primary
+   ------------------------------ */
+
+QPushButton#primaryBtn {{
+    background-color: {ACCENT};
+    color: {CANVAS};
+    border: none;
+}}
+
 QPushButton#primaryBtn:hover {{
-    background-color: {TEAL_HOVER};
+    background-color: {ACCENT_HOVER};
 }}
 
 QPushButton#primaryBtn:pressed {{
-    background-color: {TEAL_MUTED};
+    background-color: {ACCENT_ACTIVE};
 }}
 
 QPushButton#primaryBtn:disabled {{
@@ -175,39 +166,47 @@ QPushButton#primaryBtn:disabled {{
     color: {TEXT_DISABLED};
 }}
 
+/* ------------------------------
+   Secondary
+   ------------------------------ */
+
 QPushButton#secondaryBtn {{
-    background-color: {SECONDARY_BG};
+    background-color: {INTERACTIVE};
     color: {TEXT_PRIMARY};
     border: 1px solid {BORDER};
-    border-radius: {BUTTON_RADIUS}px;
-    padding: 6px;
 }}
 
 QPushButton#secondaryBtn:hover {{
     background-color: {BORDER};
-    border-color: {TEAL_HOVER};
+}}
+
+QPushButton#secondaryBtn:pressed {{
+    background-color: {INTERACTIVE};
 }}
 
 QPushButton#secondaryBtn:disabled {{
     color: {TEXT_DISABLED};
 }}
 
+/* ------------------------------
+   Danger
+   ------------------------------ */
+
 QPushButton#dangerBtn {{
-    background-color: {SECONDARY_BG};
+    background-color: {INTERACTIVE};
     color: {TEXT_PRIMARY};
     border: 1px solid {BORDER};
-    border-radius: {BUTTON_RADIUS}px;
-    padding: 6px;
 }}
 
 QPushButton#dangerBtn:hover {{
-    border-color: {ERROR};
+    border: 1px solid {ERROR};
     color: {ERROR};
 }}
 
 QPushButton#dangerBtn:pressed {{
     background-color: {ERROR};
-    color: {TEXT_PRIMARY};
+    border: 1px solid {ERROR};
+    color: {CANVAS};
 }}
 
 QPushButton#dangerBtn:disabled {{
@@ -215,7 +214,7 @@ QPushButton#dangerBtn:disabled {{
 }}
 
 /* ==================================================
-   GLOBAL SCROLLBARS
+   SCROLLBAR SYSTEM
    ================================================== */
 
 QScrollBar:vertical {{
@@ -235,7 +234,7 @@ QScrollBar::handle:vertical {{
 }}
 
 QScrollBar::handle:vertical:hover {{
-    background-color: {TEAL_MUTED};
+    background-color: {ACCENT};
 }}
 
 QScrollBar::add-page:vertical,
@@ -267,7 +266,7 @@ QScrollBar::handle:horizontal {{
 }}
 
 QScrollBar::handle:horizontal:hover {{
-    background-color: {TEAL_MUTED};
+    background-color: {ACCENT};
 }}
 
 QScrollBar::add-page:horizontal,

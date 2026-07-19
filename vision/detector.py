@@ -59,10 +59,7 @@ class Detector:
         Initialize the object detector.
 
         Loads detector configuration and prepares resources
-        required for image processing.
-        """
-
-        self._background = self._load_background()
+        required for image processing.       """        
 
         self._transform_matrix = self._create_workspace_transform()
 
@@ -76,7 +73,9 @@ class Detector:
         self._kernel = cv2.getStructuringElement(
             cv2.MORPH_ELLIPSE,
             MORPH_KERNEL_SIZE,
-        )            
+        )
+
+        self._background = self._load_background()            
 
     def set_background(self, frame: ndarray) -> None:
         """

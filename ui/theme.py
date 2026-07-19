@@ -7,57 +7,61 @@ Single source of truth for colors, spacing and typography.
 Changing values here updates the entire application.
 """
 
-# ===========================
-# BACKGROUNDS
-# ===========================
+# ==========================================
+# SURFACE SYSTEM
+# ==========================================
 
-APP_BACKGROUND = "#0D1117"
-CARD_BACKGROUND = "#161B22"
-BORDER = "#30363D"
+# Application foundation.
+CANVAS = "#0E1116"
 
-# ===========================
-# TEXT
-# ===========================
+# Cards and permanent panels.
+SURFACE = "#1A2028"
 
-TEXT_PRIMARY = "#E6EDF3"
-TEXT_SECONDARY = "#C9D1D9"
-TEXT_SUPPORT = "#8B949E"
-TEXT_DISABLED = "#6E7681"
+# Interactive controls.
+INTERACTIVE = "#252D36"
 
-# ===========================
-# BRAND (TEAL)
-# ===========================
+# ==========================================
+# TEXT SYSTEM
+# ==========================================
 
-TEAL_MUTED = "#3AAE9F"
-TEAL = "#46C1BA"
-TEAL_HOVER = "#63D5CE"
-TEAL_ACTIVE = "#96EFE3"
+TEXT_PRIMARY   = "#EEF2F6"
+TEXT_SECONDARY = "#C7CFD8"
+TEXT_DISABLED  = "#8A949F"
 
-# ===========================
-# STATUS
-# ===========================
+# ==========================================
+# ACCENT SYSTEM
+# ==========================================
 
-SUCCESS = "#3FB950"
-WARNING = "#D29922"
+ACCENT = "#46C1BA"
+ACCENT_HOVER = "#63D5CE"
+ACCENT_ACTIVE = "#96EFE3"
+
+# ==========================================
+# BORDER SYSTEM
+# ==========================================
+
+BORDER = "#3A434E"
+BORDER_FOCUS = "#566271"
+
+# ==========================================
+# STATUS SYSTEM
+# ==========================================
+
+SUCCESS = "#3FB950" 
+WARNING = "#D29922" 
 ERROR = "#F85149"
 
-# ===========================
-# BUTTONS
-# ===========================
-
-SECONDARY_BG = "#21262D"
-
-# ===========================
+# ==========================================
 # TYPOGRAPHY
-# ===========================
+# ==========================================
 
 HEADER_SIZE = 20
 CARD_TITLE_SIZE = 15
 BODY_SIZE = 13
 
-# ===========================
+# ==========================================
 # SPACING
-# ===========================
+# ==========================================
 
 CARD_RADIUS = 12
 INPUT_RADIUS = 6
