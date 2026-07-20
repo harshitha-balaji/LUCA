@@ -1,28 +1,53 @@
-# 🤖 V1 Modular Robotic Arm Controller
+<h1>
+  <img src="assets/icon.png" alt="LUCA Logo" width="36" align="center">
+  LUCA
+</h1>
 
-A modular desktop application for controlling a 6-DOF robotic arm with integrated vision, motion computation, hardware abstraction, and mission monitoring.
+### Lightweight Unified Controller Assistant
 
-The system is designed around a layered architecture where each subsystem has a clearly defined responsibility, allowing individual modules to be developed, tested, and extended independently.
+*A modular desktop application for robotic manipulator control.*
 
-The controller supports autonomous pick-and-place workflows by combining:
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![PyQt6](https://img.shields.io/badge/UI-PyQt6-41CD52)
+![OpenCV](https://img.shields.io/badge/OpenCV-Computer%20Vision-5C3EE8)
+![ESP32](https://img.shields.io/badge/Embedded-ESP32-E7352C)
+![NumPy](https://img.shields.io/badge/NumPy-Numerical%20Computing-013243)
+![Status](https://img.shields.io/badge/Status-Active%20Development-orange)
 
-- Real-time camera perception
-- Object detection
-- Motion computation
-- Hardware abstraction
-- ESP32-based embedded control
-- Interactive PyQt6 dashboard
+## Overview
 
----
+LUCA (Lightweight Unified Controller Assistant) is a desktop application for controlling and monitoring robotic manipulators through a unified graphical interface.
 
-# Project Architecture
+The application combines user interaction, computer vision, motion computation, hardware abstraction, and embedded communication into a modular software architecture. Each subsystem is designed with a clear responsibility, allowing components to be developed, tested, and extended independently.
+
+The current implementation targets a robotic manipulator controlled by an ESP32-based embedded system and demonstrates a pick-and-place workflow using real-time vision and kinematic motion computation.
+
+LUCA is intended as a foundation for future robotics development, with an architecture that supports the addition of new hardware interfaces, motion capabilities, and perception modules without significant changes to the overall system design.
+
+## Features
+
+The current implementation provides:
+
+- A PyQt6-based desktop interface
+- Camera integration for workspace monitoring
+- OpenCV-based object detection
+- Kinematic motion computation
+- Mission control and execution
+- Hardware abstraction for robot operations
+- Serial communication with an ESP32 controller
+- Event logging
+- Centralized system configuration
+
+## Project Structure
 
 ```text
-robotic_arm/
-
+LUCA/
 │
 ├── main.py
 ├── config.py
+│
+├── assets/
+│   └── icon.png
 │
 ├── ui/
 │   ├── components/
@@ -37,25 +62,25 @@ robotic_arm/
 │   ├── workers/
 │   │   └── mission_worker.py
 │   │
+│   ├── main_window.py
 │   ├── styles.py
-│   ├── theme.py
-│   ├── theme_light.py
-│   └── main_window.py
+│   └── theme.py
 │
 ├── core/
-│   ├── robot_controller.py
 │   ├── logger.py
-│   └── models.py
+│   ├── models.py
+│   └── robot_controller.py
 │
 ├── vision/
 │   ├── assets/
-│   │   └── workspace_background.png
+│   │   └── background.png
 │   │
 │   ├── camera.py
 │   └── detector.py
 │
 ├── motion/
-│   └── kinematics.py
+│   ├── kinematics.py
+│   └── trajectory.py
 │
 ├── hardware/
 │   ├── arm.py
@@ -65,518 +90,91 @@ robotic_arm/
 │   └── serial_interface.py
 │
 └── firmware/
-    └── firmware.ino
+    ├── command_constants.h
+    ├── firmware_config.h
+    ├── firmware.ino
+    ├── protocol.cpp
+    ├── protocol.h
+    ├── robot.cpp
+    ├── robot.h
+    ├── servos.cpp
+    └── servos.h
 ```
 
----
-
-# System Architecture
-
-```
+## System Architecture
+```text
                  User
-                  |
-                  v
+                  │
+                  ▼
           PyQt6 Dashboard
-                  |
-                  v
+                  │
+                  ▼
           Robot Controller
-                  |
-     -------------------------
-     |           |           |
-     v           v           v
-  Vision      Motion      Hardware
- System       System     Abstraction
-     |           |           |
-     v           v           v
- Camera      Kinematics   Serial Interface
-                             |
-                             v
-                           ESP32
-                             |
-                             v
-                         Robot Hardware
+                  │
+     ┌────────┬────────┬
+     ▼        ▼        ▼
+  Vision    Motion   Hardware
+   System    System  Abstraction
+     │         │         │
+     ▼         ▼         ▼
+ Camera   Kinematics   Serial Interface
+                           │
+                           ▼
+                         ESP32
+                           │
+                           ▼
+                    Robot Manipulator
+
 ```
 
----
-# Software Layers
+## Subsystem Overview
 
-| Layer | Responsibility |
-|--------|----------------|
-| UI | User interaction and visualization |
-| Core | Coordinates all subsystems |
-| Vision | Camera processing and object detection |
-| Motion | Kinematic computations |
-| Hardware | High-level robot operations |
-| Communication | Data exchange with ESP32 |
-| Firmware | Low-level embedded control |
----
-# Folder Responsibilities
+### UI
+Provides the graphical interface for interacting with the application, displaying camera output, mission status, and system information.
 
-# main.py
+### Core
+Coordinates communication between the different subsystems and manages the overall application workflow.
 
-Application entry point.
+### Vision
+Captures images from the camera and performs object detection.
 
-Responsible for:
+### Motion
+Performs kinematic computations required for robot movement.
 
-- Creating the Qt application
-- Initializing the main window
-- Starting the desktop controller interface
+### Hardware
+Provides high-level interfaces for robot motion and gripper control.
 
----
+### Communication
+Handles data exchange between the desktop application and the ESP32 controller.
 
-# config.py
+### Firmware
+Runs on the ESP32 and executes low-level hardware control.
 
-Central configuration module.
-
-Stores global parameters such as:
-
-- Camera configuration
-- Serial communication settings
-- Robot parameters
-- Vision thresholds
-- Workspace configuration
-
-Keeping configuration separate allows hardware and software parameters to be modified without changing application logic.
-
----
-
-# ui/
-
-Contains all desktop interface components.
-
-The UI layer is responsible only for:
-
-- Displaying robot information
-- Receiving user commands
-- Showing mission status
-- Visualizing camera output and logs
-
-The UI **never directly communicates with hardware**.
-
-All actions are forwarded through the robot controller.
-
----
-
-## ui/components/
-
-Contains independent dashboard modules.
-
-Current components:
-
-### camera.py
-
-Displays:
-
-- Live camera feed
-- Vision status
-- Calibration state
-
-
-### overview.py
-
-Provides a summary of the robot state.
-
-Displays:
-
-- Connection status
-- Current robot mode
-- Mission state
-
-
-### mission.py
-
-Handles mission interaction.
-
-Responsible for:
-
-- Starting missions
-- Stopping missions
-- Displaying mission progress
-
-
-### event_log.py
-
-Displays system activity.
-
-Includes:
-
-- Robot events
-- Mission updates
-- Errors
-- Debug information
-
----
-
-## ui/widgets/
-
-Reusable UI building blocks.
-
-Current widgets:
-
-### cards.py
-
-Provides reusable card-style containers used throughout the dashboard.
-
-Future widgets can be added here without affecting individual components.
-
----
-## ui/workers/
-
-Background worker threads used to execute long-running operations without blocking the graphical interface.
-
-Current workers include:
-
-### mission_worker.py
-
-executes autonomous missions on a separate Qt thread, keeping the UI responsive during robot operation.
----
-## styles.py
-
-Single source of truth for UI design constants.
-
-Contains:
-
-- Colors
-- Typography
-- Spacing
-- Border radius
-- Component dimensions
-
----
-
-## theme.py
-
-Dark theme implementation.
-
----
-
-## theme_light.py
-
-Light theme implementation.
-
----
-
-## main_window.py
-
-Main application container.
-
-Responsible for:
-
-- Creating the dashboard layout
-- Loading UI components
-- Connecting UI events to controller actions
-
-
----
-
-# core/
-
-Contains the central application logic.
-
-The core layer coordinates all subsystems.
-
-It does not directly implement:
-
-- Image processing
-- Servo control
-- Serial communication
-- Mathematical calculations
-
-Instead, it orchestrates specialized modules.
-
----
-
-
-## robot_controller.py
-
-High-level robot coordinator.
-
-Responsibilities:
-
-- Managing robot state
-- Starting and stopping missions
-- Coordinating vision results
-- Requesting motion calculations
-- Sending commands to hardware
-- Updating application status
-
-The controller acts as the bridge between the UI and lower-level systems.
-
----
-
-## models.py
-
-Shared data structures.
-
-Examples:
-
-- Position
-- JointAngles
-- RobotStatus
-- MissionState
-- DetectedObject
-
-Models provide consistent communication between modules.
-
----
-
-## logger.py
-
-Lightweight application event logger.
-
-Responsible for:
-
-- Recording application events
-- Categorizing log messages by severity
-- Maintaining an in-memory event history
-- Providing thread-safe access for the UI
-
-The logger is shared across the application and serves as the backend for the Event Log panel.
-
----
-
-# vision/
-
-Computer vision subsystem.
-
-Responsible for perception only.
-
-No robot movement logic exists inside this module.
-
----
-## assets/
-
-Stores vision calibration resources.
-
-Currently contains:
-
-- Workspace background image captured during calibration and used for background subtraction-based object detection.
-
----
-
-
-## camera.py
-
-Handles:
-
-- Camera initialization
-- Frame capture
-- Live frame streaming
-
----
-
-## detector.py
-
-Object detection pipeline.
-
-Current approach:
-
-1. Preprocess image
-2. Perform background subtraction
-3. Generate foreground mask
-4. Remove image noise
-5. Detect object contours
-6. Estimate object centroid
-7. Convert image coordinates to workspace coordinates
-
----
-
-
-# motion/
-
-Mathematical motion subsystem.
-
-Currently contains:
-
-## kinematics.py
-
-Responsible for:
-
-- Forward kinematics
-- Inverse kinematics
-- Coordinate transformations
-
-Input:
-
-```
-Target Position
-```
-
-Output:
-
-```
-Joint Angles
-```
-
-The motion layer is independent of the physical robot hardware.
-
----
-
-# hardware/
-
-Hardware abstraction layer.
-
-Provides high-level robot operations.
-
-The rest of the application interacts with the robot through this layer instead of directly controlling actuators.
-
----
-
-## arm.py
-
-Controls robotic arm movement.
-
-Provides operations such as:
-
-- Move joints
-- Move to position
-- Home robot
-- Stop movement
-
----
-
-## gripper.py
-
-Controls gripper operations.
-
-Responsible for:
-
-- Opening gripper
-- Closing gripper
-- Monitoring grip state
-
----
-
-# communication/
-
-Communication interface between software and embedded controller.
-
----
-
-## serial_interface.py
-
-Current communication method:
-
-```
-Python Application
-        |
-      Serial
-        |
-       ESP32
-```
-
-Responsible for:
-
-- Sending commands
-- Receiving responses
-- Managing communication state
-
-The architecture allows future communication methods:
-
-- USB
-- Wi-Fi
-- Ethernet
-- Bluetooth
-
-without changing higher-level software.
-
----
-
-# firmware/
-
-Embedded software running on ESP32.
-
-## firmware.ino
-
-Responsible for:
-
-- Receiving commands
-- Servo control
-- Sensor reading
-- Hardware safety handling
-- Returning robot status
-
----
-
-# V1 Workflow
-
-The current target workflow is autonomous pick-and-place.
-
-```
-1. Capture workspace image
-
-2. Detect object
-
-3. Estimate object position
-
-4. Compute joint angles
-
-5. Send movement commands
-
-6. Move robotic arm
-
-7. Close gripper and secure the object
-
-8. Move to destination
-
-9. Open gripper
-
-10. Return to idle state
-```
-
----
-
-# Design Principles
-
-This project follows modular software engineering principles:
-
-- Separation of concerns
-- Hardware abstraction
-- Single responsibility
-- Loose coupling
-- Reusable components
-- Independent subsystem testing
-- Scalable architecture
-
-Each module owns a specific responsibility, allowing improvements without rewriting the complete system.
-
----
-
-# Future Development
-
-Planned improvements:
-
-- Background camera processing thread
-- Vision debugging overlays
-- Mission queue support
-- Enhanced event logging
-- Real-time robot state synchronization
-- Advanced trajectory planning
-- Collision avoidance
-- Object tracking
-- AI-based object recognition
-- Multi-camera support
-- ROS integration
-- Remote robot control
-
----
-
-# Technology Stack
+## Technology Stack
 
 | Component | Technology |
-|---|---|
-| Desktop UI | PyQt6 |
-| Vision Processing | OpenCV |
+|-----------|------------|
+| Programming Language | Python |
+| Desktop Interface | PyQt6 |
+| Computer Vision | OpenCV |
 | Numerical Computing | NumPy |
-| Communication | Serial |
-| Controller Logic | Python |
 | Embedded Controller | ESP32 |
 | Firmware | Arduino C++ |
+| Communication | Serial |
 
----
+## Roadmap
 
-# Project Goal
+Future development may include:
 
-The goal of V1 is to establish a reliable modular foundation for robotic manipulation.
+- Background camera processing
+- Vision debugging tools
+- Improved mission management
+- Enhanced trajectory planning
+- Collision avoidance
+- Object tracking
+- Multi-camera support
+- Additional communication interfaces
 
-The architecture is designed so future capabilities such as intelligent perception, advanced planning, and autonomous decision-making can be added without redesigning the entire system.
+## License
+
+This project is licensed under the MIT License.

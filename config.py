@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent
 
 APP_NAME = "LUCA"
 
-APP_FULL_NAME = "Lightweight Universal Controller Assistant"
+APP_FULL_NAME = "Lightweight Unified Controller Assistant"
 
 APP_VERSION = "1.0.0"
 
