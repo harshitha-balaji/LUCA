@@ -20,7 +20,7 @@ LUCA (Lightweight Unified Controller Assistant) is a desktop application for con
 
 The application combines user interaction, computer vision, motion computation, hardware abstraction, and embedded communication into a modular software architecture. Each subsystem is designed with a clear responsibility, allowing components to be developed, tested, and extended independently.
 
-The current implementation targets a robotic manipulator controlled by an ESP32-based embedded system and demonstrates a pick-and-place workflow using real-time vision and kinematic motion computation.
+The current implementation targets a robotic manipulator controlled by an ESP32-based embedded system and is designed to support a pick-and-place workflow using real-time vision and kinematic motion computation.
 
 LUCA is intended as a foundation for future robotics development, with an architecture that supports the addition of new hardware interfaces, motion capabilities, and perception modules without significant changes to the overall system design.
 
